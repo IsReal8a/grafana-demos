@@ -1,0 +1,70 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Grafana Faro RUM (Real User Monitoring). The upstream frontend is an
+# unmodified Go binary serving pre-rendered HTML - there's no code-level
+# injection point without forking and rebuilding it. Instead, this adds an
+# nginx sidecar in front of it that reverse-proxies the frontend and injects
+# the Faro SDK <script> tag into every HTML response via sub_filter, then
+# retargets the frontend Services at the sidecar instead of the app
+# container directly. Faro data is sent straight to Grafana Cloud's public
+# collector (no Alloy involvement).
+#
+# The faro-nginx-conf ConfigMap is NOT declared as a resource here - it needs
+# FARO_COLLECTOR_URL/FARO_APP_NAME substituted in from .env first, so
+# deploy-all-in-one-local.sh renders configmap.yaml into the temp
+# kustomization's own resources list instead. This component only carries
+# the patches, which have nothing secret to substitute.
+
+patches:
+# Appended via JSON6902 "-" (guaranteed end-of-array) rather than a
+# strategic-merge container block: SMP places a new, unmatched container
+# name at the START of the list, which shifted "server" from index 0 to 1
+# and made the app-wide "reduce resources for local deployment" patch
+# (which targets containers/0 by index) silently hit this sidecar instead -
+# handing the app container upstream's defaults and the sidecar the app's
+# intended resources. Appending guarantees "server" stays at index 0.
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/-
+      value:
+        name: faro-proxy
+        image: nginx:1.27-alpine
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: faro-nginx-conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        resources:
+          requests:
+            cpu: 20m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+    - op: add
+      path: /spec/template/spec/volumes
+      value:
+      - name: faro-nginx-conf
+        configMap:
+          name: faro-nginx-conf
+  target:
+    kind: Deployment
+    name: frontend
+
+- patch: |-
+    - op: replace
+      path: /spec/ports/0/targetPort
+      value: 8081
+  target:
+    kind: Service
+    name: frontend
+
+- patch: |-
+    - op: replace
+      path: /spec/ports/0/targetPort
+      value: 8081
+  target:
+    kind: Service
+    name: frontend-external

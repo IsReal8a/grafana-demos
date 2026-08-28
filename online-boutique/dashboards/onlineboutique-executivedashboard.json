@@ -1,0 +1,2336 @@
+{
+  "dashboard": {
+    "apiVersion": "dashboard.grafana.app/v2",
+    "kind": "Dashboard",
+    "metadata": {
+      "name": "is9k8zq",
+      "generation": 31,
+      "creationTimestamp": "2026-05-04T11:26:14Z",
+      "labels": {},
+      "annotations": {}
+    },
+    "spec": {
+      "annotations": [
+        {
+          "kind": "AnnotationQuery",
+          "spec": {
+            "query": {
+              "kind": "DataQuery",
+              "group": "grafana",
+              "version": "v0",
+              "spec": {},
+              "labels": {
+                "grafana.app/export-label": "grafana-1"
+              }
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "builtIn": true
+          }
+        }
+      ],
+      "cursorSync": "Off",
+      "description": "Executive-level dashboard for the Online Boutique platform. Shows business performance (traffic, orders, conversion funnel) and overall system health for leadership review.",
+      "editable": true,
+      "elements": {
+        "panel-1": {
+          "kind": "Panel",
+          "spec": {
+            "id": 1,
+            "title": "Storefront Traffic",
+            "description": "Current request rate to the frontend — a proxy for active shoppers on the platform.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(rate(traces_span_metrics_calls_total{service_name=\"frontend\", k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m]))",
+                          "instant": false,
+                          "legendFormat": "req/s",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "reqps",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "blue"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "fixed",
+                      "fixedColor": "blue"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-10": {
+          "kind": "Panel",
+          "spec": {
+            "id": 10,
+            "title": "P95 Response Time by Service",
+            "description": "P95 response time per service. Keeps tabs on which services are creating latency bottlenecks for customers.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "histogram_quantile(0.95, sum by(service_name, le) (rate(traces_span_metrics_duration_seconds_bucket{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[$__rate_interval])))",
+                          "instant": false,
+                          "legendFormat": "{{service_name}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 0.5,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 1,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 8,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "log": 2,
+                        "type": "log"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-11": {
+          "kind": "Panel",
+          "spec": {
+            "id": 11,
+            "title": "Service Error Rate Overview",
+            "description": "Error rate per service in the boutique namespace. Green = healthy, yellow = degraded, red = critical. Sorted by highest error rate first.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "editorMode": "code",
+                          "expr": "sort_desc(sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", status_code=\"STATUS_CODE_ERROR\", cluster=~\"$cluster\"}[5m])) / sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m])) * 100)",
+                          "instant": false,
+                          "legendFormat": "{{service_name}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "bargauge",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "displayMode": "gradient",
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                  },
+                  "maxVizHeight": 300,
+                  "minVizHeight": 16,
+                  "minVizWidth": 8,
+                  "namePlacement": "left",
+                  "orientation": "horizontal",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showUnfilled": true,
+                  "sizing": "auto",
+                  "valueMode": "color"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 5,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "noValue": "No errors"
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-12": {
+          "kind": "Panel",
+          "spec": {
+            "id": 12,
+            "title": "Running Pods (Boutique)",
+            "description": "Total running pods in the boutique namespace. Indicates whether all microservices are fully operational.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(kube_pod_status_phase{namespace=\"boutique\", phase=\"Running\", cluster=~\"$cluster\"})",
+                          "instant": false,
+                          "legendFormat": "running",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 8,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 11,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-13": {
+          "kind": "Panel",
+          "spec": {
+            "id": 13,
+            "title": "Deployment Availability",
+            "description": "Percentage of deployment replicas available versus desired. 100% means all services are fully scaled.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(kube_deployment_status_replicas_available{namespace=\"boutique\", cluster=~\"$cluster\"}) / sum(kube_deployment_spec_replicas{namespace=\"boutique\", cluster=~\"$cluster\"}) * 100",
+                          "instant": false,
+                          "legendFormat": "availability",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "decimals": 0,
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "red"
+                        },
+                        {
+                          "value": 80,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 100,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-14": {
+          "kind": "Panel",
+          "spec": {
+            "id": 14,
+            "title": "Container Restarts (Selected Range)",
+            "description": "Total container restarts across the boutique namespace in the selected time range. Restarts indicate instability.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(increase(kube_pod_container_status_restarts_total{namespace=\"boutique\", cluster=~\"$cluster\"}[$__range]))",
+                          "instant": false,
+                          "legendFormat": "{{pod}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "decimals": 0,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 5,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-15": {
+          "kind": "Panel",
+          "spec": {
+            "id": 15,
+            "title": "Pod Health Over Time",
+            "description": "Pod lifecycle status over time for the boutique namespace. Shows running, pending, and failed pod counts.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum by(phase) (kube_pod_status_phase{namespace=\"boutique\", cluster=~\"$cluster\"})",
+                          "instant": false,
+                          "legendFormat": "{{phase}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 15,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "normal"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Running"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "green",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Pending"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "yellow",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Failed"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "red",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "scope": "series",
+                        "options": "Unknown"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "transparent",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Succeeded"
+                      },
+                      "properties": [
+                        {
+                          "id": "color",
+                          "value": {
+                            "fixedColor": "transparent",
+                            "mode": "fixed"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-16": {
+          "kind": "Panel",
+          "spec": {
+            "id": 16,
+            "title": "P95 Latency by Service",
+            "description": "Current P95 response time per service. Red = above 1s threshold.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sort_desc(histogram_quantile(0.95, sum by(service_name, le) (rate(traces_span_metrics_duration_seconds_bucket{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m]))))",
+                          "instant": true,
+                          "legendFormat": "{{service_name}}",
+                          "queryType": "instant",
+                          "range": false
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "bargauge",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "displayMode": "gradient",
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                  },
+                  "maxVizHeight": 300,
+                  "minVizHeight": 16,
+                  "minVizWidth": 8,
+                  "namePlacement": "left",
+                  "orientation": "horizontal",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showUnfilled": true,
+                  "sizing": "auto",
+                  "valueMode": "color"
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "min": 0,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 0.5,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 1,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-17": {
+          "kind": "Panel",
+          "spec": {
+            "id": 17,
+            "title": "Boutique Error Logs - Cascading Failure Window",
+            "description": "Error logs from boutique services during cascading failure",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "loki",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "direction": "backward",
+                          "editorMode": "code",
+                          "expr": "{namespace=\"boutique\", cluster=\"$cluster\"} |~ \"(?i)error|fail|timeout|connection refused|OOM|crash\"",
+                          "maxLines": 50,
+                          "queryType": "range",
+                          "supportingQueryType": "assistant"
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "loki-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-logs"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "logs",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "dedupStrategy": "none",
+                  "enableInfiniteScrolling": false,
+                  "enableLogDetails": true,
+                  "prettifyLogMessage": true,
+                  "showControls": false,
+                  "showFieldSelector": false,
+                  "showHeader": true,
+                  "showLevel": true,
+                  "showLogAttributes": true,
+                  "showTime": false,
+                  "sortOrder": "Descending",
+                  "timestampResolution": "ms",
+                  "unwrappedColumns": false,
+                  "wrapLogMessage": true
+                },
+                "fieldConfig": {
+                  "defaults": {},
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-2": {
+          "kind": "Panel",
+          "spec": {
+            "id": 2,
+            "title": "Orders Per Minute",
+            "description": "Rate of PlaceOrder calls to CheckoutService — the primary revenue-generating transaction.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "(sum(rate(traces_span_metrics_calls_total{span_name=\"hipstershop.CheckoutService/PlaceOrder\", cluster=~\"$cluster\"}[5m])) or vector(0)) * 60",
+                          "instant": false,
+                          "legendFormat": "orders/min",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "decimals": 1,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "fixed",
+                      "fixedColor": "green"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-20": {
+          "kind": "Panel",
+          "spec": {
+            "id": 20,
+            "title": "Error Traces",
+            "description": "",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "tempo",
+                        "version": "v0",
+                        "spec": {
+                          "limit": 20,
+                          "metricsQueryType": "range",
+                          "query": "{resource.k8s.namespace.name=\"boutique\" && resource.k8s.cluster.name=\"$cluster\" && status=error}",
+                          "queryType": "traceql",
+                          "serviceMapUseNativeHistograms": false,
+                          "tableType": "traces"
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "tempo-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-traces"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "table",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "cellHeight": "sm",
+                  "frameIndex": 0,
+                  "showHeader": true,
+                  "sortBy": [
+                    {
+                      "desc": true,
+                      "displayName": "Start time"
+                    }
+                  ]
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    },
+                    "noValue": "No Errors",
+                    "custom": {
+                      "align": "auto",
+                      "cellOptions": {
+                        "type": "auto"
+                      },
+                      "footer": {
+                        "reducers": []
+                      },
+                      "inspect": false
+                    }
+                  },
+                  "overrides": [
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Name"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 50
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Service"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 79
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Start time"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 161
+                        }
+                      ]
+                    },
+                    {
+                      "matcher": {
+                        "id": "byName",
+                        "options": "Duration"
+                      },
+                      "properties": [
+                        {
+                          "id": "custom.width",
+                          "value": 65
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "panel-3": {
+          "kind": "Panel",
+          "spec": {
+            "id": 3,
+            "title": "Platform Error Rate",
+            "description": "Percentage of failed requests across all boutique services. Lower is better.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "((sum(rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", status_code=\"STATUS_CODE_ERROR\", cluster=~\"$cluster\"}[5m])) or vector(0)) / sum(rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m]))) * 100",
+                          "instant": false,
+                          "legendFormat": "error %",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "decimals": 2,
+                    "min": 0,
+                    "max": 100,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 5,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-4": {
+          "kind": "Panel",
+          "spec": {
+            "id": 4,
+            "title": "P95 Response Time (Frontend)",
+            "description": "95th percentile response time for the storefront — reflects the experience of your top 5% slowest customers.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "histogram_quantile(0.95, sum by(le) (rate(traces_span_metrics_duration_seconds_bucket{service_name=\"frontend\", k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m])))",
+                          "instant": false,
+                          "legendFormat": "p95 latency",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "s",
+                    "decimals": 3,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 0.5,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 1,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-5": {
+          "kind": "Panel",
+          "spec": {
+            "id": 5,
+            "title": "Shopping Activity (Add to Cart / min)",
+            "description": "Rate of AddItem calls — a strong proxy for active customer intent and platform engagement.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(rate(traces_span_metrics_calls_total{span_name=\"hipstershop.CartService/AddItem\", cluster=~\"$cluster\"}[5m])) * 60",
+                          "instant": false,
+                          "legendFormat": "adds/min",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "area",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "decimals": 1,
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "purple"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "fixed",
+                      "fixedColor": "purple"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-6": {
+          "kind": "Panel",
+          "spec": {
+            "id": 6,
+            "title": "Active Services",
+            "description": "Number of services in the boutique namespace currently receiving traffic. Full complement is 10.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "editorMode": "code",
+                          "exemplar": false,
+                          "expr": "count(sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[5m])) > 0)",
+                          "instant": false,
+                          "legendFormat": "services",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "stat",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "colorMode": "background",
+                  "graphMode": "none",
+                  "justifyMode": "center",
+                  "orientation": "auto",
+                  "percentChangeColorMode": "standard",
+                  "reduceOptions": {
+                    "calcs": [
+                      "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                  },
+                  "showPercentChange": false,
+                  "textMode": "auto",
+                  "wideLayout": true
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "dark-red"
+                        },
+                        {
+                          "value": 5,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 6,
+                          "color": "dark-green"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "thresholds"
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-7": {
+          "kind": "Panel",
+          "spec": {
+            "id": 7,
+            "title": "Request Volume by Service",
+            "description": "Request rate over time broken down by service. Shows which services are handling the most traffic.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[$__rate_interval]))",
+                          "instant": false,
+                          "legendFormat": "{{service_name}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "reqps",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 10,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-8": {
+          "kind": "Panel",
+          "spec": {
+            "id": 8,
+            "title": "Business Conversion Funnel",
+            "description": "Business conversion funnel: shopping activity (add to cart), checkout attempts (PlaceOrder), and completed orders (SendOrderConfirmation). Shows how customer intent converts to revenue.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(rate(traces_span_metrics_calls_total{span_name=\"hipstershop.CartService/AddItem\", cluster=~\"$cluster\"}[$__rate_interval])) * 60",
+                          "instant": false,
+                          "legendFormat": "Add to Cart / min",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(rate(traces_span_metrics_calls_total{span_name=\"hipstershop.CheckoutService/PlaceOrder\", cluster=~\"$cluster\"}[$__rate_interval])) * 60",
+                          "instant": false,
+                          "legendFormat": "Orders Placed / min",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "B",
+                      "hidden": false
+                    }
+                  },
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum(rate(traces_span_metrics_calls_total{span_name=\"hipstershop.EmailService/SendOrderConfirmation\", cluster=~\"$cluster\"}[$__rate_interval])) * 60",
+                          "instant": false,
+                          "legendFormat": "Order Confirmations / min",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "C",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [
+                      "mean",
+                      "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "short",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 80,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 15,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        },
+        "panel-9": {
+          "kind": "Panel",
+          "spec": {
+            "id": 9,
+            "title": "Error Rate by Service",
+            "description": "Error rate per service as a percentage of total requests. Helps identify which services are experiencing failures.",
+            "links": [],
+            "data": {
+              "kind": "QueryGroup",
+              "spec": {
+                "queries": [
+                  {
+                    "kind": "PanelQuery",
+                    "spec": {
+                      "query": {
+                        "kind": "DataQuery",
+                        "group": "prometheus",
+                        "version": "v0",
+                        "spec": {
+                          "app": "grafana-assistant-app",
+                          "expr": "sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", status_code=\"STATUS_CODE_ERROR\", cluster=~\"$cluster\"}[$__rate_interval])) / sum by(service_name) (rate(traces_span_metrics_calls_total{k8s_namespace_name=\"boutique\", cluster=~\"$cluster\"}[$__rate_interval])) * 100",
+                          "instant": false,
+                          "legendFormat": "{{service_name}}",
+                          "queryType": "range",
+                          "range": true
+                        },
+                        "labels": {
+                          "grafana.app/export-label": "prometheus-1",
+                          "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+                        }
+                      },
+                      "refId": "A",
+                      "hidden": false
+                    }
+                  }
+                ],
+                "transformations": [],
+                "queryOptions": {}
+              }
+            },
+            "vizConfig": {
+              "kind": "VizConfig",
+              "group": "timeseries",
+              "version": "13.3.0-32457798232",
+              "spec": {
+                "options": {
+                  "annotations": {
+                    "clustering": -1,
+                    "multiLane": false
+                  },
+                  "legend": {
+                    "calcs": [],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                  },
+                  "tooltip": {
+                    "hideZeros": false,
+                    "mode": "multi",
+                    "sort": "none"
+                  }
+                },
+                "fieldConfig": {
+                  "defaults": {
+                    "unit": "percent",
+                    "thresholds": {
+                      "mode": "absolute",
+                      "steps": [
+                        {
+                          "value": 0,
+                          "color": "green"
+                        },
+                        {
+                          "value": 1,
+                          "color": "yellow"
+                        },
+                        {
+                          "value": 5,
+                          "color": "red"
+                        }
+                      ]
+                    },
+                    "color": {
+                      "mode": "palette-classic"
+                    },
+                    "noValue": "No errors",
+                    "custom": {
+                      "axisBorderShow": false,
+                      "axisCenteredZero": false,
+                      "axisColorMode": "text",
+                      "axisLabel": "",
+                      "axisPlacement": "auto",
+                      "barAlignment": 0,
+                      "barWidthFactor": 0.6,
+                      "drawStyle": "line",
+                      "fillOpacity": 20,
+                      "gradientMode": "none",
+                      "hideFrom": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": false
+                      },
+                      "insertNulls": false,
+                      "lineInterpolation": "linear",
+                      "lineWidth": 2,
+                      "pointSize": 5,
+                      "scaleDistribution": {
+                        "type": "linear"
+                      },
+                      "showPoints": "auto",
+                      "showValues": false,
+                      "spanNulls": false,
+                      "stacking": {
+                        "group": "A",
+                        "mode": "none"
+                      },
+                      "thresholdsStyle": {
+                        "mode": "off"
+                      }
+                    }
+                  },
+                  "overrides": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "layout": {
+        "kind": "GridLayout",
+        "spec": {
+          "items": [
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-1"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 4,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-2"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 8,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-3"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 12,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-4"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 16,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-5"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 20,
+                "y": 0,
+                "width": 4,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-6"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 4,
+                "width": 8,
+                "height": 6,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-9"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 8,
+                "y": 4,
+                "width": 8,
+                "height": 6,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-11"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 16,
+                "y": 4,
+                "width": 8,
+                "height": 6,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-16"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 10,
+                "width": 12,
+                "height": 7,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-17"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 12,
+                "y": 10,
+                "width": 12,
+                "height": 7,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-20"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 17,
+                "width": 12,
+                "height": 8,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-7"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 12,
+                "y": 17,
+                "width": 12,
+                "height": 8,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-8"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 25,
+                "width": 14,
+                "height": 8,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-10"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 14,
+                "y": 25,
+                "width": 10,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-14"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 14,
+                "y": 29,
+                "width": 5,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-12"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 19,
+                "y": 29,
+                "width": 5,
+                "height": 4,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-13"
+                }
+              }
+            },
+            {
+              "kind": "GridLayoutItem",
+              "spec": {
+                "x": 0,
+                "y": 33,
+                "width": 24,
+                "height": 6,
+                "element": {
+                  "kind": "ElementReference",
+                  "name": "panel-15"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "links": [],
+      "liveNow": false,
+      "preload": false,
+      "tags": [],
+      "timeSettings": {
+        "timezone": "browser",
+        "from": "now-15m",
+        "to": "now",
+        "autoRefresh": "",
+        "autoRefreshIntervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "hideTimepicker": false,
+        "fiscalYearStartMonth": 0
+      },
+      "title": "Online Boutique — Executive Overview",
+      "variables": [
+        {
+          "kind": "QueryVariable",
+          "spec": {
+            "name": "cluster",
+            "current": {
+              "text": "",
+              "value": ""
+            },
+            "label": "Cluster",
+            "hide": "dontHide",
+            "refresh": "onDashboardLoad",
+            "skipUrlSync": false,
+            "query": {
+              "kind": "DataQuery",
+              "group": "prometheus",
+              "version": "v0",
+              "spec": {
+                "qryType": 4,
+                "query": "label_values(kube_pod_status_phase, cluster)",
+                "refId": "PrometheusVariableQueryEditor-VariableQuery"
+              },
+              "labels": {
+                "grafana.app/export-label": "prometheus-1",
+                "grafana.app/export-datasource-name": "grafanacloud-israelochoa-prom"
+              }
+            },
+            "regex": "",
+            "regexApplyTo": "value",
+            "sort": "alphabeticalAsc",
+            "definition": "label_values(kube_pod_status_phase, cluster)",
+            "options": [],
+            "multi": false,
+            "includeAll": false,
+            "allowCustomValue": false
+          }
+        }
+      ],
+      "preferences": {
+        "layout": {
+          "kind": "GridLayout",
+          "spec": {
+            "items": []
+          }
+        }
+      }
+    }
+  },
+  "overwrite": true,
+  "folderId": 0
+}
