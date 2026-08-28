@@ -13,7 +13,7 @@ And to be honest... people are more interested in buying clothes and accessories
 Side note: After creating this DEMO I realized that it actually can work for you, the person who don't need to present anything!
 Yes, you can use it to deploy the Tech stack and play with Grafana Cloud, get the feeling about our product and at later stage try Grafana Cloud for your Production projects, even the ones you have at Home!.
 
-*DISCLAIMER:* This project is far from perfect and it worked for my use case, if you see that you can contribute to make it better, please create an issue or PR.
+**DISCLAIMER:** This project is far from perfect and it worked for my use case, if you see that you can contribute to make it better, please create an issue or PR.
 I created this DEMO because I needed to showcase Grafana Cloud features in my Grafana Labs interview process.
 
 
@@ -61,8 +61,8 @@ Do this first! For Frontend monitoring.
 
 Go to Observability->Frontend and "Create New"
 
-Name: Online Boutique
-Allowed Origins: http://localhost:8080
+- Name: Online Boutique
+- Allowed Origins: http://localhost:8080
 
 ![Frontend monitoring](images/image.png)
 
@@ -78,7 +78,9 @@ Click "Continue" until Step 4 and select any alert if you want.
 - Select "Lightweight - Quick start", click Next
 - Remote monitoring as it's and click Next
 - Now, this is important, as this is the data you need for your `.env` file:
+
 ![Add collector](images/image2.png)
+
 All information required for the `.env` file is located inside the "Deployment code to copy"
 *IMPORTANT!*
 LEAVE the page as it is, don't close it or do anything until you copy all that info and then proceed to install the DEMO, after installing the DEMO try the "Test connection" button, that will add the collector to Fleet Management.
@@ -411,6 +413,6 @@ colima logs
               └─────────────────┘
 ```
 
-**Total deployment time**: ~5-7 minutes
-**Total resource usage**: ~3-4GB RAM, ~2GB disk
-**Ready for demo**: Immediately after deployment
+- **Total deployment/configuration time**: ~7-10 minutes
+- **Total resource usage**: ~3-4GB RAM, ~2GB disk
+- **Ready for demo**: Immediately after deployment
