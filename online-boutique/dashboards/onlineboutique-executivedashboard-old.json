@@ -4,8 +4,8 @@
     "kind": "Dashboard",
     "metadata": {
       "name": "is9k8zq",
-      "generation": 2,
-      "creationTimestamp": "2026-08-28T09:37:52Z",
+      "generation": 31,
+      "creationTimestamp": "2026-05-04T11:26:14Z",
       "labels": {},
       "annotations": {}
     },
@@ -190,7 +190,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 0.5,
@@ -198,7 +198,7 @@
                         },
                         {
                           "value": 1,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -252,7 +252,7 @@
           "spec": {
             "id": 11,
             "title": "Service Error Rate Overview",
-            "description": "Error rate per service in the boutique namespace. Blue = healthy, yellow = degraded, orange = critical. Sorted by highest error rate first.",
+            "description": "Error rate per service in the boutique namespace. Green = healthy, yellow = degraded, red = critical. Sorted by highest error rate first.",
             "links": [],
             "data": {
               "kind": "QueryGroup",
@@ -327,7 +327,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 1,
@@ -335,7 +335,7 @@
                         },
                         {
                           "value": 5,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -420,7 +420,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "orange"
+                          "color": "red"
                         },
                         {
                           "value": 8,
@@ -428,7 +428,7 @@
                         },
                         {
                           "value": 11,
-                          "color": "blue"
+                          "color": "green"
                         }
                       ]
                     },
@@ -515,7 +515,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "orange"
+                          "color": "red"
                         },
                         {
                           "value": 80,
@@ -523,7 +523,7 @@
                         },
                         {
                           "value": 100,
-                          "color": "blue"
+                          "color": "green"
                         }
                       ]
                     },
@@ -608,7 +608,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 1,
@@ -616,7 +616,7 @@
                         },
                         {
                           "value": 5,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -700,11 +700,11 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 80,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -756,7 +756,7 @@
                         {
                           "id": "color",
                           "value": {
-                            "fixedColor": "blue",
+                            "fixedColor": "green",
                             "mode": "fixed"
                           }
                         }
@@ -786,7 +786,7 @@
                         {
                           "id": "color",
                           "value": {
-                            "fixedColor": "orange",
+                            "fixedColor": "red",
                             "mode": "fixed"
                           }
                         }
@@ -834,7 +834,7 @@
           "spec": {
             "id": 16,
             "title": "P95 Latency by Service",
-            "description": "Current P95 response time per service. Orange = above 1s threshold.",
+            "description": "Current P95 response time per service. Red = above 1s threshold.",
             "links": [],
             "data": {
               "kind": "QueryGroup",
@@ -907,7 +907,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 0.5,
@@ -915,7 +915,7 @@
                         },
                         {
                           "value": 1,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1148,11 +1148,11 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 80,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1299,7 +1299,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 1,
@@ -1307,7 +1307,7 @@
                         },
                         {
                           "value": 5,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1392,7 +1392,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 0.5,
@@ -1400,7 +1400,7 @@
                         },
                         {
                           "value": 1,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1572,7 +1572,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "dark-orange"
+                          "color": "dark-red"
                         },
                         {
                           "value": 5,
@@ -1580,7 +1580,7 @@
                         },
                         {
                           "value": 6,
-                          "color": "dark-blue"
+                          "color": "dark-green"
                         }
                       ]
                     },
@@ -1664,11 +1664,11 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 80,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1837,11 +1837,11 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 80,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },
@@ -1959,7 +1959,7 @@
                       "steps": [
                         {
                           "value": 0,
-                          "color": "blue"
+                          "color": "green"
                         },
                         {
                           "value": 1,
@@ -1967,7 +1967,7 @@
                         },
                         {
                           "value": 5,
-                          "color": "orange"
+                          "color": "red"
                         }
                       ]
                     },

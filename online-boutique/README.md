@@ -143,6 +143,12 @@ But, the deployment script enables an Executive Dashboard.
 "View it at: https://${GRAFANA_STACK}.grafana.net${DASHBOARD_URL}"
 ```
 
+Dashboard
+
+![Dashboard](images/image3.png)
+
+**NOTE:** There is another dashboard with a different color set inside the `dashboards` directory, `dashboards/onlineboutique-executivedashboard-old.json`
+
 ## Cleanup
 
 Use the `uninstall.sh` script.
