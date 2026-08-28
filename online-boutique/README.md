@@ -2,6 +2,7 @@
 
 Deploy the complete GCP Online Boutique Microservices DEMO on your MacBook Mx using Colima and monitor it with Grafana Cloud Observability
 https://github.com/googlecloudplatform/microservices-demo
+
 All credit goes to the maintainers of that repo.
 
 ## Why another application DEMO for Grafana?
