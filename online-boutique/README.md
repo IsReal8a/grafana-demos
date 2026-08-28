@@ -2,24 +2,25 @@
 
 Deploy the complete GCP Online Boutique Microservices DEMO on your MacBook Mx using Colima and monitor it with Grafana Cloud Observability
 https://github.com/googlecloudplatform/microservices-demo
+All credit goes to the maintainers of that repo.
 
 ## Why another application DEMO for Grafana?
 
-Good question, I challenge you to find a DEMO that works out of the box without too much hassle, this Tech stack can be set it up between 7-10 minutes depending on how fast you can configure the RUM step and then start playing with Grafana Cloud, and that's the main use case here, start using Grafana right away.
+Good question, I challenge you to find a DEMO that works out of the box without too much hassle, this Tech stack can be set up in 7-10 minutes depending on how fast you can configure the RUM step and the Fleet Management, then you can start playing with Grafana Cloud, and that's the main use case here, start using Grafana Cloud right away.
 
-And to be honest... people are interested in buying clothes and accessories, plus, in my opinion, this a most interesting project from the technical side, it has more microservices and things to show on a DEMO.
+And to be honest... people are more interested in buying clothes and accessories, plus, in my opinion, this a most interesting project from the technical side, it has more microservices and things to show on a DEMO.
 
-After creating this DEMO I realized that it actually can work for you, who don't need to present anything!
-Yes, you can use it to deploy the tech stack and play with Grafana, get the feeling about our product and try it out for your Production projects.
+Side note: After creating this DEMO I realized that it actually can work for you, the person who don't need to present anything!
+Yes, you can use it to deploy the Tech stack and play with Grafana Cloud, get the feeling about our product and at later stage try Grafana Cloud for your Production projects, even the ones you have at Home!.
 
 *DISCLAIMER:* This project is far from perfect and it worked for my use case, if you see that you can contribute to make it better, please create an issue or PR.
-I created this because I needed a presentation and a DEMO for my Grafana Labs interview process.
+I created this DEMO because I needed to showcase Grafana Cloud features in my Grafana Labs interview process.
 
 
 ## Requirements
 
-This setup has been optimized to get the most out of a M1 Macbook with limited resources and tested on other Mx.
-It will be nice if you have some experience with Kubernetes, microservices, etc. if that's not the case, no worries, I hope this project can help you setup a successful DEMO without too much issues.
+This setup has been optimized to get the most out of a M1 Macbook with limited resources and has been tested on other Mx.
+It will be nice if you have some experience with Kubernetes, microservices, etc. if that's not the case, no worries, I hope this project can help you setup a successful DEMO without too much effort.
 
 Minimum requirements to run the Colima cluster.
 
@@ -31,7 +32,7 @@ Minimum requirements to run the Colima cluster.
 
 ### 0. Get your Free Forever Grafana Cloud account
 
-Yes, free, this DEMO was created using this Free tier.
+Yes, free! this DEMO was created using the Free tier.
 https://grafana.com/products/cloud/
 
 ### 1. Install Colima
@@ -81,7 +82,6 @@ Click "Continue" until Step 4 and select any alert if you want.
 All information required for the `.env` file is located inside the "Deployment code to copy"
 *IMPORTANT!*
 LEAVE the page as it is, don't close it or do anything until you copy all that info and then proceed to install the DEMO, after installing the DEMO try the "Test connection" button, that will add the collector to Fleet Management.
-
 
 ### Step 1: Start Colima
 Start Colima with Kubernetes
