@@ -167,10 +167,10 @@ scenario_2() {
     fi
     
     print_warning "Setting very low memory limit on cartservice..."
-    
-    # Set extremely low memory limit
+
+    # Set extremely low memory limit (request must stay <= limit or the patch is rejected)
     kubectl patch deployment cartservice -n "$NAMESPACE" --type='json' \
-        -p='[{"op": "add", "path": "/spec/template/spec/containers/0/resources/limits", "value": {"memory": "10Mi"}}]'
+        -p='[{"op": "add", "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}, {"op": "add", "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "8Mi"}]'
     
     print_success "Scenario applied!"
     echo ""
@@ -398,7 +398,7 @@ scenario_9() {
     
     echo "Step 3: Setting low memory on cartservice..."
     kubectl patch deployment cartservice -n "$NAMESPACE" --type='json' \
-        -p='[{"op": "add", "path": "/spec/template/spec/containers/0/resources/limits", "value": {"memory": "10Mi"}}]'
+        -p='[{"op": "add", "path": "/spec/template/spec/containers/0/resources/limits/memory", "value": "10Mi"}, {"op": "add", "path": "/spec/template/spec/containers/0/resources/requests/memory", "value": "8Mi"}]'
     
     print_success "Cascading failure scenario applied!"
     echo ""
