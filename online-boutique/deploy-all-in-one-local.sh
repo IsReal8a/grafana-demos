@@ -237,12 +237,17 @@ applicationObservability:
       enabled: true
       # Reduce histogram buckets to save ~4000+ series (Grafana support recommendation)
       # Note: Using "2500ms" instead of "2.5s" to avoid Go duration parser issues
-      histogramBuckets: ["50ms", "100ms", "250ms", "500ms", "1s", "2500ms", "5s", "10s"]
+      # Key must be histogram.explicit.buckets - a flat "histogramBuckets" key is silently ignored by the chart
+      histogram:
+        explicit:
+          buckets: ["50ms", "100ms", "250ms", "500ms", "1s", "2500ms", "5s", "10s"]
+      # service.name is already added by default by the spanmetrics connector (along with
+      # span.name, span.kind, status.code) - listing it again fails config validation with
+      # "failed validating dimensions: duplicate dimension name \"service.name\""
       dimensions:
         - name: 'k8s.namespace.name'
         - name: 'http.method'
         - name: 'http.status_code'
-        - name: 'service.name'
 
 # Minimal cluster metrics (clustering disabled for single-replica local)
 clusterMetrics:
